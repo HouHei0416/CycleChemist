@@ -1,0 +1,17 @@
+data/*
+!data/down_sample.py
+!data/exp_dataset.csv
+
+matgpt/ckpt/
+matgpt/runs/
+matgpt/outputs/
+
+property_predictors/opvc/dataset/
+property_predictors/opvc/model_output/
+
+property_predictors/moe2_p3/ckpt/
+property_predictors/moe2_p3/runs/
+
+results/
+
+__pycache__/
