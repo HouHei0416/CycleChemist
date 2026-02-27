@@ -140,7 +140,7 @@ def main():
     
     # CSV reading options
     parser.add_argument("--header", type=int, default=None,
-                        help="Row to use as column names (default: None, use first row)")
+                        help="Row to use as column names (default: 0, use first row as header)")
     parser.add_argument("--names", type=str, nargs="+", default=None,
                         help="Column names if header=None (default: None)")
     
@@ -149,9 +149,9 @@ def main():
     # Load data
     print(f"Loading data from: {args.input}")
     if args.names:
-        data = pd.read_csv(args.input, header=args.header, names=args.names)
+        data = pd.read_csv(args.input, header=args.header, names=args.names, low_memory=False)
     else:
-        data = pd.read_csv(args.input, header=args.header)
+        data = pd.read_csv(args.input, header=args.header if args.header is not None else 0, low_memory=False)
     
     # Detect CID column if not specified
     if args.cid_column is None:
@@ -163,16 +163,25 @@ def main():
         cid_col = args.cid_column if args.cid_column in data.columns else None
     
     print(f"Detected columns: {list(data.columns)}")
+    smiles_col = args.smiles_column
+    if smiles_col not in data.columns and len(data.columns) >= 2:
+        # No header: columns are 0,1 → assume 0=CID, 1=SMILES
+        data = data.rename(columns={data.columns[0]: "CID", data.columns[1]: "SMILES"})
+        cid_col = "CID"
+        smiles_col = "SMILES"
+        print("SMILES column not found; assuming column 0=CID, column 1=SMILES")
     if cid_col:
         print(f"Using CID column: {cid_col}")
     else:
         print("No CID column detected or specified")
+    if smiles_col not in data.columns:
+        raise KeyError(f"SMILES column '{smiles_col}' not found. Columns: {list(data.columns)}. Use --names CID SMILES if file has no header.")
     
     # Run downsampling
     downsample_smiles(
         data,
         output_file=args.output,
-        smiles_column=args.smiles_column,
+        smiles_column=smiles_col,
         cid_column=cid_col,
         min_length=args.min_length,
         max_length=args.max_length,
