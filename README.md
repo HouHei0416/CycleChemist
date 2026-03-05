@@ -97,7 +97,8 @@ python matgpt/code/finetune.py \
   --run_name donor_Y6 \
   --prior_path matgpt/ckpt/matgpt_pretrain_exp_dataset/final_model.pt \
   --target_type "donor" \
-  --fixed_smiles "CCCCCCCCCCCc1c(/C=C2\C(=O)c3cc(F)c(F)cc3C2=C(C#N)C#N)sc2c1sc1c3c4nsnc4c4c5sc6c(CCCCCCCCCCC)c(/C=C7\C(=O)c8cc(F)c(F)cc8C7=C(C#N)C#N)sc6c5n(CC(CC)CCCC)c4c3n(CC(CC)CCCC)c21"
+  --fixed_smiles "CCCCCCCCCCCc1c(/C=C2\C(=O)c3cc(F)c(F)cc3C2=C(C#N)C#N)sc2c1sc1c3c4nsnc4c4c5sc6c(CCCCCCCCCCC)c(/C=C7\C(=O)c8cc(F)c(F)cc8C7=C(C#N)C#N)sc6c5n(CC(CC)CCCC)c4c3n(CC(CC)CCCC)c21" \
+  --use_homo_lumo_loss
 
 tensorboard --logdir matgpt/runs/donor_Y6
 ```
@@ -109,7 +110,8 @@ python matgpt/code/finetune.py \
   --run_name acceptor_PTB7-Th \
   --prior_path matgpt/ckpt/matgpt_pretrain_exp_dataset/final_model.pt \
   --target_type "acceptor" \
-  --fixed_smiles "CCCCC(CC)COC(=O)c1sc2c(-c3cc4c(-c5ccc(CC(CC)CCCC)s5)c5sc(C)cc5c(-c5ccc(CC(CC)CCCC)s5)c4s3)sc(C)c2c1F"
+  --fixed_smiles "CCCCC(CC)COC(=O)c1sc2c(-c3cc4c(-c5ccc(CC(CC)CCCC)s5)c5sc(C)cc5c(-c5ccc(CC(CC)CCCC)s5)c4s3)sc(C)c2c1F" \
+  --use_homo_lumo_loss
 
 tensorboard --logdir matgpt/runs/acceptor_PTB7-Th
 ```
